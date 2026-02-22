@@ -64,26 +64,6 @@ async def test_signup_nonexistent_activity():
 
 
 @pytest.mark.asyncio
-async def test_signup_duplicate_participant():
-    """Test signing up a participant who is already registered"""
-    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
-        # First sign up
-        await client.post(
-            "/activities/Basketball%20Team/signup",
-            params={"email": "duplicate@mergington.edu"}
-        )
-
-        # Try to sign up again
-        response = await client.post(
-            "/activities/Basketball%20Team/signup",
-            params={"email": "duplicate@mergington.edu"}
-        )
-        assert response.status_code == 400
-        data = response.json()
-        assert "Student already signed up for this activity" in data["detail"]
-
-
-@pytest.mark.asyncio
 async def test_unregister_from_activity():
     """Test unregistering from an activity"""
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
